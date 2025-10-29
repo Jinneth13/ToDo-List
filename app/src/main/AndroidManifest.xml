@@ -21,11 +21,6 @@
             android:label="@string/title_activity_recover_password"
             android:theme="@style/Theme.ToDo" />
         <activity
-            android:name=".ui.theme.RecoverPassword"
-            android:exported="false"
-            android:label="@string/title_activity_recover_password"
-            android:theme="@style/Theme.ToDo" />
-        <activity
             android:name=".ChangePassword"
             android:exported="false"
             android:label="@string/title_activity_change_password"
@@ -49,6 +44,11 @@
             android:name=".Home"
             android:exported="false"
             android:label="@string/title_activity_home"
+            android:theme="@style/Theme.ToDo" />
+        <activity
+            android:name=".SignIn"
+            android:exported="false"
+            android:label="@string/title_activity_sign_in"
             android:theme="@style/Theme.ToDo" />
         <activity
             android:name=".Login"

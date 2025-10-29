@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,7 +30,16 @@ class ChangeUsername : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            val context = this
+            MaterialTheme(colorScheme = lightColorScheme()) {
+                ChangeUsernameScreen(
+                    onBackClick = { finish() },
+                    onContinueClick = {
+                        val intent = Intent(context, Profile::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
         }
     }
 }

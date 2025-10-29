@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +29,28 @@ class Profile : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            val context = this
+            MaterialTheme(colorScheme = lightColorScheme()) {
+                ProfileScreen(
+                    onBackClick = { finish() },
+                    onLogoutClick = {
+                        val intent = Intent(context, Login::class.java)
+                        context.startActivity(intent)
+                    },
+                    onEditName = {
+                        val intent = Intent(context, ChangeUsername::class.java)
+                        context.startActivity(intent)
+                    },
+                    onEditEmail = {
+                        val intent = Intent(context, ChangeEmail::class.java)
+                        context.startActivity(intent)
+                    },
+                    onEditPassword = {
+                        val intent = Intent(context, ChangePassword::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,10 +40,17 @@ class Home : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 HomeScreen(
-                    onProfileClick = { /* ir a profile */ },
-                    onTasksClick = { /* ir a task */ },
+                    onProfileClick = {
+                        val intent = Intent(context, Profile::class.java)
+                        context.startActivity(intent)
+                    },
+                    onTasksClick = {
+                        val intent = Intent(context, Tasks::class.java)
+                        context.startActivity(intent)
+                    },
                     onListsClick = { /* ir a lists */ },
                     onCalendarClick = { /* ir a calendar */ },
                     onTeamsClick = { /* ir a teams */ }

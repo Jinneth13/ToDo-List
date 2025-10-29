@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,7 +30,16 @@ class RecoverPassword : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            val context = this
+            MaterialTheme(colorScheme = lightColorScheme()) {
+                RecoverPasswordScreen(
+                    onBackClick = { finish() },
+                    onSendClick = {
+                        val intent = Intent(context, Login::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
         }
     }
 }

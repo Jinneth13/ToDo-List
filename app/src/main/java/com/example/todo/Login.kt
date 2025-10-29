@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,13 +34,29 @@ class Login : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 LoginScreen(
-                    onLoginClick = { /* lógica de login */ },
-                    onSignInClick = { /* ir a registro */ },
-                    onForgotPasswordClick = { /* recuperar contraseña */ },
-                    onFacebookClick = { /* login con Facebook */ },
-                    onGoogleClick = { /* login con Google */ }
+                    onLoginClick = {
+                        val intent = Intent(context, Home::class.java)
+                        context.startActivity(intent)
+                    },
+                    onSignInClick = {
+                        val intent = Intent(context, SignIn::class.java)
+                        context.startActivity(intent)
+                    },
+                    onForgotPasswordClick = {
+                        val intent = Intent(context, RecoverPassword::class.java)
+                        context.startActivity(intent)
+                    },
+                    onFacebookClick = {
+                        val intent = Intent(context, Home::class.java)
+                        context.startActivity(intent)
+                    },
+                    onGoogleClick = {
+                        val intent = Intent(context, Home::class.java)
+                        context.startActivity(intent)
+                    }
                 )
             }
         }

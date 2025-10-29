@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,7 +35,16 @@ class ChangePassword : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            val context = this
+            MaterialTheme(colorScheme = lightColorScheme()) {
+                ChangePasswordScreen(
+                    onBackClick = { finish() },
+                    onContinueClick = {
+                        val intent = Intent(context, Profile::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
         }
     }
 }
@@ -42,7 +52,7 @@ class ChangePassword : ComponentActivity() {
 @Composable
 fun ChangePasswordScreen(
     onBackClick: () -> Unit = {},
-    onContinueClick: (String, String, String) -> Unit = { _, _, _ -> }
+    onContinueClick: (/*String, String, String*/) -> Unit = {/* _, _, _ -> */}
 ) {
     var currentPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
@@ -108,7 +118,7 @@ fun ChangePasswordScreen(
 
         // Botón continuar
         Button(
-            onClick = { onContinueClick(currentPassword, newPassword, confirmPassword) },
+            onClick = { onContinueClick(/*currentPassword, newPassword, confirmPassword*/) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),

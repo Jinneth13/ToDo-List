@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,12 +30,22 @@ class SignIn : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 SignInScreen(
                     onBackClick = { finish() },
-                    onRegisterClick = { /* lógica para registrar usuario */ },
-                    onFacebookClick = { /* registro con Facebook */ },
-                    onGoogleClick = { /* registro con Google */ }
+                    onRegisterClick = {
+                        val intent = Intent(context, Login::class.java)
+                        context.startActivity(intent)
+                    },
+                    onFacebookClick = {
+                        val intent = Intent(context, Login::class.java)
+                        context.startActivity(intent)
+                    },
+                    onGoogleClick = {
+                        val intent = Intent(context, Login::class.java)
+                        context.startActivity(intent)
+                    }
                 )
             }
         }

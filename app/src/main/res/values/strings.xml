@@ -98,6 +98,7 @@
     <string name="btnAdd">&#43;</string>
     <string name="edTxtDpDate">Select Task due date</string>
     <string name="title_activity_home">Home</string>
+    <string name="title_activity_sign_in">SignIn</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_change_email">ChangeEmail</string>
     <string name="title_activity_change_username">ChangeUsername</string>

@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,7 +29,16 @@ class Tasks : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            val context = this
+            MaterialTheme(colorScheme = lightColorScheme()) {
+                TasksScreen(
+                    onProfileClick = {
+                        val intent = Intent(context, Profile::class.java)
+                        context.startActivity(intent)
+                    },
+                    onAddTaskClick = { /*Añadir Tareas*/ }
+                )
+            }
         }
     }
 }
@@ -40,7 +52,7 @@ fun TasksScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -55,7 +67,7 @@ fun TasksScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = Color(0xFF51E4FF)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.bt_add_tasks),
@@ -69,49 +81,56 @@ fun TasksScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarSection(onProfileClick: () -> Unit) {
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.txtTasks),
-                fontSize = 22.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        },
-        navigationIcon = {
-            Icon(
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(73.dp)
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
                 painter = painterResource(id = R.drawable.icono),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp)
+                contentDescription = "",
+                modifier = Modifier.size(46.dp)
             )
-        },
-        actions = {
+
+            Text(
+                text = stringResource(id = R.string.txtTasks),
+                color = Color.Black,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold
+            )
+
             Button(
                 onClick = onProfileClick,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(42.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF51E4FF)),
                 shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.size(48.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.btnProfile),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 10.sp
+                    text = stringResource(id = R.string.btnProfile),
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
-    )
+    }
 }
 
 @Composable
 fun TaskContentSection() {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
         item { TaskCategoryTitle(stringResource(R.string.txtTasks1)) }
@@ -139,9 +158,9 @@ fun TaskCategoryTitle(title: String) {
 fun BottomBarSection() {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .height(120.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(12.dp))
@@ -165,7 +184,7 @@ fun BottomBarIcon(iconRes: Int, labelRes: Int) {
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(Color(0xFF51E4FF))
                 .padding(10.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
