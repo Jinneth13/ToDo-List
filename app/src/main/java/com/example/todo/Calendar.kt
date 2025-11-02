@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,27 +22,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class Tasks : ComponentActivity() {
+class Calendar : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
-                TasksScreen(
+                CalendarScreen(
                     onProfileClick = {
                         val intent = Intent(context, Profile::class.java)
                         context.startActivity(intent)
                     },
-                    onAddTaskClick = {},
                     onNavigate = { destination ->
                         val intent = when (destination) {
+                            "tasks" -> Intent(context, Tasks::class.java)
                             "lists" -> Intent(context, Lists::class.java)
-                            "calendar" -> Intent(context, Calendar::class.java)
                             "teams" -> Intent(context, Teams::class.java)
                             else -> null
                         }
@@ -55,62 +56,65 @@ class Tasks : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksScreen(
+fun CalendarScreen(
     onProfileClick: () -> Unit = {},
-    onAddTaskClick: () -> Unit = {},
     onNavigate: (String) -> Unit = {}
 ) {
-    // Datos simulados
-    val todayTasks = listOf("Revisar correos", "Enviar informe semanal", "Reunión con el equipo")
-    val tomorrowTasks = listOf("Actualizar presentación", "Llamar a proveedor")
-    val weekTasks = listOf("Completar módulo Compose", "Revisar documentación", "Diseñar logo del proyecto")
-    val monthTasks = listOf("Preparar entrega final", "Evaluar retroalimentación", "Publicar versión beta")
+    val todayEvents = listOf(
+        Event("Reunión con el equipo de desarrollo", "10:00 AM - 11:00 AM", Color(0xFF29760B)),
+        Event("Revisión médica", "2:00 PM - 3:00 PM", Color(0xFF3B5998))
+    )
+
+    val tomorrowEvents = listOf(
+        Event("Clase de Taekwondo", "7:00 AM - 9:00 AM", Color(0xFFFF9800)),
+        Event("Entrega de informe semanal", "11:00 AM - 12:00 PM", Color(0xFF0097A7))
+    )
+
+    val weekEvents = listOf(
+        Event("Cumpleaños de David 🎂", "Todo el día", Color(0xFF8E24AA)),
+        Event("Reunión de seguimiento del proyecto", "9:00 AM - 10:30 AM", Color(0xFF4CAF50)),
+        Event("Presentación de avances", "4:00 PM - 5:00 PM", Color(0xFF2196F3))
+    )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            TopBarSectionTasks(onProfileClick)
+        Column(modifier = Modifier.fillMaxSize()) {
+            TopBarSectionCalendar(onProfileClick)
 
-            // Contenido desplazable
             Box(modifier = Modifier.weight(1f)) {
-                TaskContentSection(
-                    todayTasks = todayTasks,
-                    tomorrowTasks = tomorrowTasks,
-                    weekTasks = weekTasks,
-                    monthTasks = monthTasks
-                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    item { CalendarSectionTitle("Hoy") }
+                    items(todayEvents) { event -> EventCard(event) }
+
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
+
+                    item { CalendarSectionTitle("Mañana") }
+                    items(tomorrowEvents) { event -> EventCard(event) }
+
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
+
+                    item { CalendarSectionTitle("Esta Semana") }
+                    items(weekEvents) { event -> EventCard(event) }
+
+                    item { Spacer(modifier = Modifier.height(80.dp)) }
+                }
             }
 
-            // Barra inferior con navegación
-            BottomBarSectionTasks(onNavigate)
-        }
-
-        // Botón flotante sobre la barra inferior
-        FloatingActionButton(
-            onClick = onAddTaskClick,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 24.dp, bottom = 120.dp),
-            containerColor = Color(0xFF51E4FF)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.bt_add_tasks),
-                contentDescription = stringResource(R.string.enter_send1),
-                tint = Color.White
-            )
+            BottomBarSectionCalendar(onNavigate)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSectionTasks(onProfileClick: () -> Unit) {
+fun TopBarSectionCalendar(onProfileClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,7 +136,7 @@ fun TopBarSectionTasks(onProfileClick: () -> Unit) {
             )
 
             Text(
-                text = stringResource(id = R.string.txtTasks),
+                text = stringResource(R.string.txtCalendar),
                 color = Color.Black,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold
@@ -146,7 +150,7 @@ fun TopBarSectionTasks(onProfileClick: () -> Unit) {
                 modifier = Modifier.size(48.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.btnProfile),
+                    text = stringResource(R.string.btnProfile),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -157,41 +161,7 @@ fun TopBarSectionTasks(onProfileClick: () -> Unit) {
 }
 
 @Composable
-fun TaskContentSection(
-    todayTasks: List<String>,
-    tomorrowTasks: List<String>,
-    weekTasks: List<String>,
-    monthTasks: List<String>
-) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        item { TaskCategoryTitle(stringResource(R.string.txtTasks1)) }
-        items(todayTasks) { task -> TaskItem(task) }
-
-        item { Spacer(modifier = Modifier.height(32.dp)) }
-
-        item { TaskCategoryTitle(stringResource(R.string.txtTasks2)) }
-        items(tomorrowTasks) { task -> TaskItem(task) }
-
-        item { Spacer(modifier = Modifier.height(32.dp)) }
-
-        item { TaskCategoryTitle(stringResource(R.string.txtTasks3)) }
-        items(weekTasks) { task -> TaskItem(task) }
-
-        item { Spacer(modifier = Modifier.height(32.dp)) }
-
-        item { TaskCategoryTitle(stringResource(R.string.txtTasks4)) }
-        items(monthTasks) { task -> TaskItem(task) }
-
-        item { Spacer(modifier = Modifier.height(80.dp)) }
-    }
-}
-
-@Composable
-fun TaskCategoryTitle(title: String) {
+fun CalendarSectionTitle(title: String) {
     Text(
         text = title,
         fontSize = 22.sp,
@@ -201,25 +171,58 @@ fun TaskCategoryTitle(title: String) {
     )
 }
 
+data class Event(
+    val title: String,
+    val time: String,
+    val color: Color
+)
+
 @Composable
-fun TaskItem(task: String) {
+fun EventCard(event: Event) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE6F9FF))
+            .padding(vertical = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = event.color.copy(alpha = 0.15f)),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Text(
-            text = "• $task",
-            modifier = Modifier.padding(12.dp),
-            color = Color.Black,
-            fontSize = 16.sp
-        )
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(14.dp)
+                    .clip(CircleShape)
+                    .background(event.color)
+            )
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Column {
+                Text(
+                    text = event.title,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                    color = Color.Black,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = event.time,
+                    fontSize = 15.sp,
+                    color = Color.Gray
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun BottomBarSectionTasks(onNavigate: (String) -> Unit) {
+fun BottomBarSectionCalendar(onNavigate: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -232,43 +235,17 @@ fun BottomBarSectionTasks(onNavigate: (String) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            BottomBarIcon(R.drawable.logo_tasks, R.string.txtTasks) { onNavigate("tasks") }
             BottomBarIcon(R.drawable.logo_lists, R.string.txtLists) { onNavigate("lists") }
-            BottomBarIcon(R.drawable.logo_calendar, R.string.txtCalendar) { onNavigate("calendar") }
             BottomBarIcon(R.drawable.logo_teams, R.string.txtTeams) { onNavigate("teams") }
         }
     }
 }
 
-@Composable
-fun BottomBarIcon(iconRes: Int, labelRes: Int, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        Image(
-            painter = painterResource(id = iconRes),
-            contentDescription = stringResource(labelRes),
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF51E4FF))
-                .padding(5.dp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = stringResource(id = labelRes),
-            fontSize = 14.sp,
-            color = Color.Black
-        )
-    }
-}
-
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewTasksScreen() {
+fun PreviewCalendarScreen() {
     MaterialTheme {
-        TasksScreen()
+        CalendarScreen()
     }
 }

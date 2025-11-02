@@ -11,6 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDo">
         <activity
+            android:name=".Teams"
+            android:exported="false"
+            android:label="@string/title_activity_teams"
+            android:theme="@style/Theme.ToDo" />
+        <activity
+            android:name=".Calendar"
+            android:exported="false"
+            android:label="@string/title_activity_calendar"
+            android:theme="@style/Theme.ToDo" />
+        <activity
+            android:name=".Lists"
+            android:exported="false"
+            android:label="@string/title_activity_lists"
+            android:theme="@style/Theme.ToDo" />
+        <activity
             android:name=".Tasks"
             android:exported="false"
             android:label="@string/title_activity_tasks"

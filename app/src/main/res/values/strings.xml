@@ -105,6 +105,9 @@
     <string name="title_activity_change_password">ChangePassword</string>
     <string name="title_activity_recover_password">RecoverPassword</string>
     <string name="title_activity_tasks">Tasks</string>
+    <string name="title_activity_lists">Lists</string>
+    <string name="title_activity_teams">Teams</string>
+    <string name="title_activity_calendar">Calendar</string>
 
 
 </resources>
