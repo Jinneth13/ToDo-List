@@ -156,7 +156,7 @@ fun TopBar(onProfileClick: () -> Unit) {
                 Text(
                     text = stringResource(id = R.string.btnProfile),
                     color = Color.White,
-                    fontSize = 12.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
