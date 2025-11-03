@@ -7,16 +7,31 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,6 +84,8 @@ fun ProfileScreen(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        TopBar()
+
         TopSection(
             onBackClick = onBackClick,
             onLogoutClick = onLogoutClick
@@ -85,7 +102,6 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Imagen de perfil
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -101,7 +117,6 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Fondo inferior azul
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,7 +124,6 @@ fun ProfileScreen(
                 .padding(24.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Nombre
                 ProfileInfoRow(
                     label = stringResource(R.string.txtUsername),
                     value = "",
@@ -127,7 +141,6 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Contraseña
                 ProfileInfoRow(
                     label = stringResource(R.string.enter_contraseñap_hint),
                     value = stringResource(R.string.txtPasswordHidden),
@@ -150,13 +163,21 @@ fun TopSection(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Botón de retroceso
-        IconButton(onClick = onBackClick) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack/*painter = painterResource(id = R.drawable.ic_arrow_back)*/,
-                contentDescription = stringResource(R.string.button_back_text),
-                tint = Color.Black,
-                modifier = Modifier.size(28.dp)
+        Button(
+            onClick = onBackClick,
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF51E4FF)),
+            contentPadding = PaddingValues(10.dp),
+            modifier = Modifier
+                .size(48.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.icono_arrow),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(46.dp)
+                    .graphicsLayer(
+                        scaleX = -1f
+                    )
             )
         }
 
@@ -191,12 +212,12 @@ fun ProfileInfoRow(
             Text(
                 text = label,
                 color = Color.White,
-                fontSize = 16.sp
+                fontSize = 18.sp
             )
             Text(
                 text = value,
                 color = Color.White,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }

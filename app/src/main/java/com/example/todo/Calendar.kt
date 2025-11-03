@@ -7,13 +7,30 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +52,10 @@ class Calendar : ComponentActivity() {
             val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 CalendarScreen(
+                    onHomeClick = {
+                        val intent = Intent(context, Home::class.java)
+                        context.startActivity(intent)
+                    },
                     onProfileClick = {
                         val intent = Intent(context, Profile::class.java)
                         context.startActivity(intent)
@@ -57,6 +78,7 @@ class Calendar : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
+    onHomeClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
     onNavigate: (String) -> Unit = {}
 ) {
@@ -82,7 +104,9 @@ fun CalendarScreen(
             .background(Color.White)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TopBarSectionCalendar(onProfileClick)
+            TopBar()
+
+            TopBarSectionCalendar(onHomeClick, onProfileClick)
 
             Box(modifier = Modifier.weight(1f)) {
                 LazyColumn(
@@ -90,17 +114,17 @@ fun CalendarScreen(
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
                 ) {
-                    item { CalendarSectionTitle("Hoy") }
+                    item { CalendarSectionTitle(stringResource(R.string.txtTasks1)) }
                     items(todayEvents) { event -> EventCard(event) }
 
                     item { Spacer(modifier = Modifier.height(24.dp)) }
 
-                    item { CalendarSectionTitle("Mañana") }
+                    item { CalendarSectionTitle(stringResource(R.string.txtTasks2)) }
                     items(tomorrowEvents) { event -> EventCard(event) }
 
                     item { Spacer(modifier = Modifier.height(24.dp)) }
 
-                    item { CalendarSectionTitle("Esta Semana") }
+                    item { CalendarSectionTitle(stringResource(R.string.txtCalendar1)) }
                     items(weekEvents) { event -> EventCard(event) }
 
                     item { Spacer(modifier = Modifier.height(80.dp)) }
@@ -114,7 +138,7 @@ fun CalendarScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSectionCalendar(onProfileClick: () -> Unit) {
+fun TopBarSectionCalendar(onHomeClick: () -> Unit, onProfileClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -129,12 +153,19 @@ fun TopBarSectionCalendar(onProfileClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.icono),
-                contentDescription = null,
-                modifier = Modifier.size(46.dp)
-            )
-
+            Button(
+                onClick = onHomeClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                shape = CircleShape,
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.size(48.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icono),
+                    contentDescription = null,
+                    modifier = Modifier.size(46.dp)
+                )
+            }
             Text(
                 text = stringResource(R.string.txtCalendar),
                 color = Color.Black,
@@ -185,7 +216,7 @@ fun EventCard(event: Event) {
             .padding(vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = event.color.copy(alpha = 0.15f)),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
             modifier = Modifier

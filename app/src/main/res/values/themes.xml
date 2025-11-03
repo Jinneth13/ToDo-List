@@ -2,4 +2,9 @@
 <resources>
 
     <style name="Theme.ToDo" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ToDo.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/iconop</item>
+        <item name="postSplashScreenTheme">@style/Theme.ToDo</item>
+    </style>
 </resources>

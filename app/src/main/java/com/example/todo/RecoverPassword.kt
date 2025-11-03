@@ -7,15 +7,32 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,7 +40,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.todo.R
 
 class RecoverPassword : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +72,8 @@ fun RecoverPasswordScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // Barra superior
+        TopBar()
+
         TopBarRecoverPassword(onBackClick = onBackClick)
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -72,7 +89,6 @@ fun RecoverPasswordScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Campo de texto (correo o usuario)
         OutlinedTextField(
             value = emailOrUser,
             onValueChange = { emailOrUser = it },
@@ -91,7 +107,6 @@ fun RecoverPasswordScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botón enviar
         Button(
             onClick = { onSendClick(emailOrUser) },
             modifier = Modifier
@@ -124,15 +139,22 @@ fun TopBarRecoverPassword(onBackClick: () -> Unit) {
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
-        IconButton(
+        Button(
             onClick = onBackClick,
-            modifier = Modifier.align(Alignment.CenterStart)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF51E4FF)),
+            contentPadding = PaddingValues(10.dp),
+            modifier = Modifier
+                .size(48.dp)
+                .align(Alignment.CenterStart)
         ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack/*painter = painterResource(id = R.drawable.ic_arrow_back)*/,
-                contentDescription = stringResource(R.string.button_back_text),
-                tint = Color.White,
-                modifier = Modifier.size(28.dp)
+            Image(
+                painter = painterResource(id = R.drawable.icono_arrow),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(46.dp)
+                    .graphicsLayer(
+                        scaleX = -1f
+                    )
             )
         }
     }

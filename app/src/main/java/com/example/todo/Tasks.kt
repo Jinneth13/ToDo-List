@@ -33,6 +33,10 @@ class Tasks : ComponentActivity() {
             val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 TasksScreen(
+                    onHomeClick = {
+                        val intent = Intent(context, Home::class.java)
+                        context.startActivity(intent)
+                    },
                     onProfileClick = {
                         val intent = Intent(context, Profile::class.java)
                         context.startActivity(intent)
@@ -56,11 +60,11 @@ class Tasks : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TasksScreen(
+    onHomeClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
     onAddTaskClick: () -> Unit = {},
     onNavigate: (String) -> Unit = {}
 ) {
-    // Datos simulados
     val todayTasks = listOf("Revisar correos", "Enviar informe semanal", "Reunión con el equipo")
     val tomorrowTasks = listOf("Actualizar presentación", "Llamar a proveedor")
     val weekTasks = listOf("Completar módulo Compose", "Revisar documentación", "Diseñar logo del proyecto")
@@ -75,9 +79,10 @@ fun TasksScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            TopBarSectionTasks(onProfileClick)
+            TopBar()
 
-            // Contenido desplazable
+            TopBarSectionTasks(onHomeClick, onProfileClick)
+
             Box(modifier = Modifier.weight(1f)) {
                 TaskContentSection(
                     todayTasks = todayTasks,
@@ -87,11 +92,9 @@ fun TasksScreen(
                 )
             }
 
-            // Barra inferior con navegación
             BottomBarSectionTasks(onNavigate)
         }
 
-        // Botón flotante sobre la barra inferior
         FloatingActionButton(
             onClick = onAddTaskClick,
             modifier = Modifier
@@ -110,7 +113,7 @@ fun TasksScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSectionTasks(onProfileClick: () -> Unit) {
+fun TopBarSectionTasks(onHomeClick: () -> Unit, onProfileClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,11 +128,19 @@ fun TopBarSectionTasks(onProfileClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.icono),
-                contentDescription = null,
-                modifier = Modifier.size(46.dp)
-            )
+            Button(
+                onClick = onHomeClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                shape = CircleShape,
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.size(48.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icono),
+                    contentDescription = null,
+                    modifier = Modifier.size(46.dp)
+                )
+            }
 
             Text(
                 text = stringResource(id = R.string.txtTasks),
