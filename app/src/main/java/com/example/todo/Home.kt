@@ -1,5 +1,6 @@
 package com.example.todo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,13 +40,29 @@ class Home : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 HomeScreen(
-                    onProfileClick = { /* ir a profile */ },
-                    onTasksClick = { /* ir a task */ },
-                    onListsClick = { /* ir a lists */ },
-                    onCalendarClick = { /* ir a calendar */ },
-                    onTeamsClick = { /* ir a teams */ }
+                    onProfileClick = {
+                        val intent = Intent(context, Profile::class.java)
+                        context.startActivity(intent)
+                    },
+                    onTasksClick = {
+                        val intent = Intent(context, Tasks::class.java)
+                        context.startActivity(intent)
+                    },
+                    onListsClick = {
+                        val intent = Intent(context, Lists::class.java)
+                        context.startActivity(intent)
+                    },
+                    onCalendarClick = {
+                        val intent = Intent(context, Calendar::class.java)
+                        context.startActivity(intent)
+                    },
+                    onTeamsClick = {
+                        val intent = Intent(context, Teams::class.java)
+                        context.startActivity(intent)
+                    }
                 )
             }
         }
@@ -63,15 +80,15 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp),
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopBar(onProfileClick = onProfileClick)
+        TopBar()
+
+        TopBarHome(onProfileClick = onProfileClick)
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        // Primera fila: Tasks y Lists
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -90,7 +107,6 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        // Segunda fila: Calendar y Teams
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -110,7 +126,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun TopBar(onProfileClick: () -> Unit) {
+fun TopBarHome(onProfileClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,7 +164,7 @@ fun TopBar(onProfileClick: () -> Unit) {
                 Text(
                     text = stringResource(id = R.string.btnProfile),
                     color = Color.White,
-                    fontSize = 12.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
