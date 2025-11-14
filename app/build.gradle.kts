@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,12 +42,14 @@ android {
 
 dependencies {
 
-//    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
-//    implementation("com.google.firebase:firebase-analytics")
-//    //implementation(libs.firebase.auth)
-//    implementation("androidx.credentials:credentials:1.3.0")
-//    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
-//    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation("com.facebook.android:facebook-login:latest.release")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -59,7 +61,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:1.2.0")
+//    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.animation.core.lint)
     implementation(libs.androidx.appcompat)

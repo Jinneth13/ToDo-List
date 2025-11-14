@@ -41,7 +41,7 @@
     <string name="change_password_ToDo">Change Password</string>
     <string name="recover_password_ToDo">Recover Password</string>
     <string name="btnLogout">Logout</string>
-    <string name="txtUsername">Brendan Moore</string>
+    <string name="txtUsername">Username</string>
     <string name="txtEmailHidden">****************@*****.com</string>
     <string name="txtPasswordHidden">*************</string>
     <string name="txtTitleTasks">Entry Title Tasks</string>
@@ -91,4 +91,7 @@
     <string name="title_activity_calendar">Calendar</string>
 
 
+    <string name="facebook_app_id">2024714315017386</string>
+    <string name="fb_login_protocol_scheme">fb2024714315017386</string>
+    <string name="facebook_client_token">a33b77573046ef767c68e9716340875b</string>
 </resources>

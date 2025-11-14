@@ -34,38 +34,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 
 class Home : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        /*val email = intent.getStringExtra("email")
+        val password = intent.getStringExtra("password")
+        val username = intent.getStringExtra("username")
+
+        getSharedPreferences(getString(R.string.title_home), MODE_PRIVATE).edit {
+            putString("username", username)
+            putString("email", email)
+            putString("password", password)
+            apply()
+        }*/
+
+//        saveData(username, email, password)
+
         setContent {
-            val context = this
             MaterialTheme(colorScheme = lightColorScheme()) {
                 HomeScreen(
-                    onProfileClick = {
-                        val intent = Intent(context, Profile::class.java)
-                        context.startActivity(intent)
-                    },
-                    onTasksClick = {
-                        val intent = Intent(context, Tasks::class.java)
-                        context.startActivity(intent)
-                    },
-                    onListsClick = {
-                        val intent = Intent(context, Lists::class.java)
-                        context.startActivity(intent)
-                    },
-                    onCalendarClick = {
-                        val intent = Intent(context, Calendar::class.java)
-                        context.startActivity(intent)
-                    },
-                    onTeamsClick = {
-                        val intent = Intent(context, Teams::class.java)
-                        context.startActivity(intent)
-                    }
+                    onProfileClick = { navigateTo(Profile::class.java) },
+                    onTasksClick = { navigateTo(Tasks::class.java) },
+                    onListsClick = { navigateTo(Lists::class.java) },
+                    onCalendarClick = { navigateTo(Calendar::class.java) },
+                    onTeamsClick = { navigateTo(Teams::class.java) }
                 )
             }
         }
+    }
+
+    /*private fun saveData(username: String?, email: String?, password: String?) {
+        getSharedPreferences(getString(R.string.title_home), MODE_PRIVATE).edit {
+            putString("username", username)
+            putString("email", email)
+            putString("password", password)
+            apply()
+        }
+    }*/
+
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        startActivity(intent)
     }
 }
 
@@ -148,7 +162,7 @@ fun TopBarHome(onProfileClick: () -> Unit) {
             )
 
             Text(
-                text = stringResource(id = R.string.txtTitle_home),
+                text = stringResource(id = R.string.title_home),
                 color = Color.Black,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold
@@ -178,9 +192,7 @@ fun FeatureButton(
     label: String,
     onClick: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF51E4FF)),
@@ -204,7 +216,7 @@ fun FeatureButton(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewHomeScreen() {
     HomeScreen()
